@@ -16,7 +16,7 @@ resource "aws_iam_policy" "policy_test" {
     ]
   })
    tags = {
-    Name        = "policy_test-${var.environment}"
+    Name        = "policy_test_${var.environment}"
     Environment = var.environment
     CreatedBy   = "terraform"
   }
@@ -27,7 +27,7 @@ resource "aws_vpc" "vpc_test" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-    Name        = "vpc-${var.environment}"
+    Name        = "vpc_${var.environment}"
     Environment = "${var.environment}"
   }
 }
@@ -37,7 +37,7 @@ resource "aws_subnet" "sub_public1" {
   cidr_block        = "10.0.0.0/24"
   availability_zone = "${var.region}a"
   tags = {
-    Name = "sub_public1-${var.environment}"
+    Name = "sub_public1_${var.environment}"
   }
 }
 resource "aws_subnet" "sub_public2" {
@@ -45,7 +45,7 @@ resource "aws_subnet" "sub_public2" {
   cidr_block        = "10.0.1.0/24"
   availability_zone = "${var.region}b"
   tags = {
-    Name = "sub_public2-${var.environment}"
+    Name = "sub_public2_${var.environment}"
   }
 }
 #   #   # AWS_SUBNETS_PUBLIC_db #  #   #
@@ -54,7 +54,7 @@ resource "aws_subnet" "sub_public3_db" {
   cidr_block        = "10.0.4.0/24"
   availability_zone = "${var.region}a"
   tags = {
-    Name = "sub_public3_db-${var.environment}"
+    Name = "sub_public3_db_${var.environment}"
   }
 }
 resource "aws_subnet" "sub_public4_db" {
@@ -62,7 +62,7 @@ resource "aws_subnet" "sub_public4_db" {
   cidr_block        = "10.0.5.0/24"
   availability_zone = "${var.region}b"
   tags = {
-    Name = "sub_public4_db-${var.environment}"
+    Name = "sub_public4_db_${var.environment}"
   }
 }
 #   #   # AWS_SUBNETS_PRIVATE #  #   #
@@ -71,7 +71,7 @@ resource "aws_subnet" "sub_private1" {
   cidr_block        = "10.0.2.0/24"
   availability_zone = "${var.region}a"
   tags = {
-    Name = "sub_private1-${var.environment}"
+    Name = "sub_private1_${var.environment}"
   }
 }
 resource "aws_subnet" "sub_private2" {
@@ -79,6 +79,6 @@ resource "aws_subnet" "sub_private2" {
   cidr_block        = "10.0.3.0/24"
   availability_zone = "${var.region}b"
   tags = {
-    Name = "sub_private2-${var.environment}"
+    Name = "sub_private2_${var.environment}"
   }
 }
