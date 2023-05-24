@@ -4,7 +4,7 @@ resource "aws_vpc" "vpc_test" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-    Name        = "vpc_${var.environment}"
+    Name        = "vpc_test_${var.environment}"
     Environment = "${var.environment}"
   }
 }
@@ -57,5 +57,55 @@ resource "aws_subnet" "sub_private2" {
   availability_zone = "${var.region}b"
   tags = {
     Name = "sub_private2_${var.environment}"
+  }
+}
+#   #   # AWS INTERNET GATEWAY #  #   #
+resource "aws_internet_gateway" "igw_test" {
+  vpc_id = aws_vpc.vpc_test.id
+  tags = {
+    Name = "internet_gateway_test_${var.environment}"
+  }
+}
+#   #   # AWS ROUTE TABLE #  #   #
+resource "aws_route_table" "route_table_test" { 
+  vpc_id = aws_vpc.vpc_test.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw_test.id
+  }
+  tags = {
+    Name = "route_table_test_${var.environment}"
+  }
+}
+#   #   # AWS ROUTE TABLE ASSOCIATION  #  #   #
+resource "aws_route_table_association" "route_table_test" {
+  subnet_id      = aws_subnet.public1.id
+  route_table_id = aws_route_table.route_table_test.id
+}
+#   #   # AWS SECURITY GROUP #  #   #
+resource "aws_security_group" "security_test" {
+  name        = "security_group_test"
+  description = "security_group_test"
+  vpc_id      = aws_vpc.vpc_test.id
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.ip}"]
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "security_gruop_test_${var.environment}"
   }
 }
