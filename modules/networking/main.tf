@@ -79,7 +79,7 @@ resource "aws_route_table" "route_table_test" {
 }
 #   #   # AWS ROUTE TABLE ASSOCIATION  #  #   #
 resource "aws_route_table_association" "route_table_test" {
-  subnet_id      = aws_subnet.public1.id
+  subnet_id      = aws_subnet.sub_public1.id
   route_table_id = aws_route_table.route_table_test.id
 }
 #   #   # AWS SECURITY GROUP #  #   #
