@@ -37,3 +37,20 @@ module "ec2_test" {
   name          = "ec2_test"
   environment   = var.environment
 }
+data "aws_vpc" "vpc_cidr" {
+  id = module.networking_test.vpc_id
+}
+module "rds_test" {
+  source            = "./modules/rds"
+  environment       = var.environment
+  engine            = "mysql"
+  engine_version    = "5.7"
+  user-name         = "laup"
+  multi_az          = var.environment == "prod" ? "true" : "false"
+  availability_zone = "us-east-1a"
+  name              = "rds_test"
+  vpc_id            = module.networking_test.vpc_id
+  subnet_ids        = [module.networking_test.subnet_id_sub_public1, module.networking_test.subnet_id_sub_public2]
+  instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
+  cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
+}
