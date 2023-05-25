@@ -46,7 +46,7 @@ module "rds_test" {
   engine            = "mysql"
   engine_version    = "5.7"
   user-name         = "laup"
-  multi_az          = var.environment == "prod" ? "true" : "false"
+  multi_az          = var.environment == "prod" ? true : false
   availability_zone = "us-east-1a"
   name              = "rds_test"
   vpc_id            = module.networking_test.vpc_id
@@ -75,11 +75,25 @@ resource "aws_iam_policy_document" "s3_policy" {
     ]
   }
 }
+resource "aws_kms_key" "key_test" {
+  description             = "encrypt_bucket_objects"
+  deletion_window_in_days = 10
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "s3_sse" {
+  bucket = aws_s3_bucket.bucket_test.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.key_test
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
 module "s3_test" {
   source           = "./modules/s3_bucket"
   environment      = var.environment
   region           = "us-east-1"
-  encrypt_with_kms = var.environment == "develop" ? "true" : false
-  kms_arn          = aws_s3_bucket.s3_test.arn
-  versioning_status = var.environment == "develop" ? "true" : false
+  encrypt_with_kms = var.environment == "develop" ? true : false
+  kms_arn          = aws_kms_key.key_test.arn
+  versioning_status = var.environment == "develop" ? true : false
 }
