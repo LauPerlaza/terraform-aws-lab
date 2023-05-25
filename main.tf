@@ -54,3 +54,35 @@ module "rds_test" {
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
+resource "aws_s3_bucket_policy" "s3_policy" {
+  count = var.enable_bucket_policy ? 1 : 0 
+   bucket = aws_s3_bucket.bucket_test.id
+  policy = data.aws_iam_policy_document.s3_policy.json
+}
+resource "aws_iam_policy_document" "s3_policy" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = local.aws_caller_identity
+    }
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+    resources = [
+      aws_s3_bucket.bucket_test.arn,
+      "${aws_s3_bucket.bucket_test.arn}/*",
+    ]
+  }
+}
+module "s3_test" {
+  source           = "./modules/s3"
+  environment      = var.environment
+  region           = "us-east-1"
+  encrypt_with_kms = var.environment == "develop" ? "true" : false
+  kms_arn          = aws_s3_bucket.s3_test.arn
+  versioning_status = var.environment == "develop" ? "true" : false
+  
+
+
+}
