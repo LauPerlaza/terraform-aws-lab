@@ -76,13 +76,10 @@ resource "aws_iam_policy_document" "s3_policy" {
   }
 }
 module "s3_test" {
-  source           = "./modules/s3"
+  source           = "./modules/s3_bucket"
   environment      = var.environment
   region           = "us-east-1"
   encrypt_with_kms = var.environment == "develop" ? "true" : false
   kms_arn          = aws_s3_bucket.s3_test.arn
   versioning_status = var.environment == "develop" ? "true" : false
-  
-
-
 }
