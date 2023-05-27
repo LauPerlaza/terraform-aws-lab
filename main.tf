@@ -55,11 +55,11 @@ module "rds_test" {
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
 resource "aws_s3_bucket_policy" "s3_policy" {
-  count = var.enable_bucket_policy ? 1 : 0 
+  count = "${var.enable_bucket_policy}" ? 1 : 0 
    bucket = aws_s3_bucket.bucket_test.id
   policy = data.aws_iam_policy_document.s3_policy.json
 }
-resource "aws_iam_policy_document" "s3_policy" {
+data "aws_iam_policy_document" "s3_policy" {
   statement {
     principals {
       type        = "AWS"
@@ -70,8 +70,8 @@ resource "aws_iam_policy_document" "s3_policy" {
       "s3:ListBucket",
     ]
     resources = [
-      aws_s3_bucket.bucket_test.arn,
-      "${aws_s3_bucket.bucket_test.arn}/*",
+      aws_s3_bucket.s3_test.arn,
+      "${aws_s3_bucket.s3_test.arn}/*",
     ]
   }
 }
@@ -80,7 +80,7 @@ resource "aws_kms_key" "key_test" {
   deletion_window_in_days = 10
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "s3_sse" {
-  bucket = aws_s3_bucket.bucket_test.id
+  bucket = "aws_s3_bucket.${var.bucket_name}.id"
 
   rule {
     apply_server_side_encryption_by_default {
@@ -89,11 +89,17 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3_sse" {
     }
   }
 }
+resource "random_string" "bucket_name" {
+  length = 4
+  special = false
+}
 module "s3_test" {
   source           = "./modules/s3_bucket"
+  bucket_name = "bucket_s3_test_${random_string.bucket_name.result}"
   environment      = var.environment
   region           = "us-east-1"
   encrypt_with_kms = var.environment == "develop" ? true : false
   kms_arn          = aws_kms_key.key_test.arn
   versioning_status = var.environment == "develop" ? true : false
-}
+  enable_bucket_policy = false
+  }
