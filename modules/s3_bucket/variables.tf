@@ -1,8 +1,8 @@
 variable "environment" {
-    type = string
+  type = string
 }
-variable  "versioning_status" {
-    type = bool
+variable "versioning_status" {
+  type = bool
 }
 variable "region" {
   type = string

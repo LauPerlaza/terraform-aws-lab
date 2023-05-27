@@ -15,7 +15,7 @@ resource "aws_iam_policy" "policy_test" {
       },
     ]
   })
-   tags = {
+  tags = {
     Name        = "policy_test_${var.environment}"
     Environment = var.environment
     CreatedBy   = "terraform"
