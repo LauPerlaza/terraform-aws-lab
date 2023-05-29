@@ -54,38 +54,30 @@ module "rds_test" {
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
-resource "aws_s3_bucket_policy" "s3_policy" {
-  count  = "${var.enable_bucket_policy}" ? 1 : 0
-  bucket = aws_s3_bucket.bucket_test.id
-  policy = data.aws_iam_policy_document.s3_policy.json
-}
-data "aws_iam_policy_document" "s3_policy" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = local.aws_caller_identity
-    }
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
-    ]
-    resources = [
-      aws_s3_bucket.s3_test.arn,
-      "${aws_s3_bucket.s3_test.arn}/*",
-    ]
-  }
-}
 resource "aws_kms_key" "key_test" {
+  # count c
   description             = "encrypt_bucket_objects"
   deletion_window_in_days = 10
 }
-resource "aws_s3_bucket_server_side_encryption_configuration" "s3_sse" {
-  bucket = "aws_s3_bucket.${var.bucket_name}.id"
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
+  count = var.encrypt_with_kms == true ? 1 : 0
+  bucket = module.s3_test.bucket_id
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.key_test
+      kms_master_key_id = aws_kms_key.key_test.arn
       sse_algorithm     = "aws:kms"
+    }
+  }
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
+  count = var.encrypt_with_kms == true ? 0 : 1 
+  bucket = module.s3_test.bucket_id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.key_test.arn
+      sse_algorithm     = "AES256"
     }
   }
 }
@@ -98,8 +90,6 @@ module "s3_test" {
   bucket_name          = "bucket_s3_test_${random_string.bucket_name.result}"
   environment          = var.environment
   region               = "us-east-1"
-  encrypt_with_kms     = var.environment == "develop" ? true : false
-  kms_arn              = aws_kms_key.key_test.arn
-  versioning_status    = var.environment == "develop" ? true : false
-  enable_bucket_policy = false
+  enable_bucket_policy = false 
+  versioning_status    = false 
 }
