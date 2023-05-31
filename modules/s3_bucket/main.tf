@@ -55,7 +55,7 @@ resource "aws_kms_key" "key_test" {
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
   count  = var.encrypt_with_kms == true ? 2 : 0   
-  bucket = module.s3_test.bucket_id
+  bucket = aws_s3_bucket.s3_test.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -66,7 +66,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
   count  = var.encrypt_with_kms == false ? 0 : 2
-  bucket = module.s3_test.bucket_id
+  bucket = aws_s3_bucket.s3_test.id
 
   rule {
     apply_server_side_encryption_by_default {
