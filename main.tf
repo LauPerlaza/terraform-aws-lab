@@ -59,7 +59,7 @@ resource "aws_kms_key" "key_test" {
   deletion_window_in_days = 10
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
-  count  = var.encrypt_with_kms == true ? 1 : 0
+  count  = var.encrypt_with_kms == true ? 2 : 0   
   bucket = module.s3_test.bucket_id
 
   rule {
@@ -70,7 +70,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
   }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
-  count  = var.encrypt_with_kms == true ? 0 : 1
+  count  = var.encrypt_with_kms == false ? 0 : 2
   bucket = module.s3_test.bucket_id
 
   rule {
@@ -81,6 +81,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
   }
 }
 module "s3_test" {
+  count                = 4  
   source               = "./modules/s3_bucket"
   bucket_name          = "bucket_s3_test"
   environment          = var.environment
