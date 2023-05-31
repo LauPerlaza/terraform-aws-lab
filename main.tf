@@ -54,38 +54,18 @@ module "rds_test" {
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
-resource "aws_kms_key" "key_test" {
-  description             = "encrypt_bucket_objects"
+module "kms" {
+  source                  = "./modules/kms"
   deletion_window_in_days = 10
 }
-resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
-  count  = var.encrypt_with_kms == true ? 2 : 0   
-  bucket = module.s3_test.bucket_id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.key_test.arn
-      sse_algorithm     = "aws:kms"
-    }
-  }
-}
-resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
-  count  = var.encrypt_with_kms == false ? 0 : 2
-  bucket = module.s3_test.bucket_id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.key_test.arn
-      sse_algorithm     = "AES256"
-    }
-  }
-}
 module "s3_test" {
-  count                = 4  
   source               = "./modules/s3_bucket"
   bucket_name          = "bucket_s3_test"
   environment          = var.environment
   region               = "us-east-1"
   enable_bucket_policy = false
   versioning_status    = false
+  encrypt_with_kms     = true
+  kms_master_key_id    = module.kms.kms_arn
+  bucket_policy        = data.aws_iam_policy_document.s3_policy.json
 }
