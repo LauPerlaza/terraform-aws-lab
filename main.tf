@@ -1,5 +1,5 @@
 module "policy_test" {
-  source = "./modules/iam_policy"
+  source      = "./modules/iam_policy"
   region      = var.region
   environment = var.environment
 }
@@ -46,11 +46,26 @@ module "rds_test" {
   engine            = "mysql"
   engine_version    = "5.7"
   user-name         = "laup"
-  multi_az          = var.environment == "prod" ? "true" : "false"
+  multi_az          = var.environment == "prod" ? true : false
   availability_zone = "us-east-1a"
   name              = "rds_test"
   vpc_id            = module.networking_test.vpc_id
   subnet_ids        = [module.networking_test.subnet_id_sub_public1, module.networking_test.subnet_id_sub_public2]
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
+}
+module "kms" {
+  source                  = "./modules/kms"
+  deletion_window_in_days = 10
+}
+module "s3_test" {
+  source               = "./modules/s3_bucket"
+  bucket_name          = "bucket_s3_test"
+  environment          = var.environment
+  region               = "us-east-1"
+  enable_bucket_policy = false
+  versioning_status    = false
+  encrypt_with_kms     = true
+  kms_master_key_id    = module.kms.kms_arn
+  bucket_policy        = data.aws_iam_policy_document.s3_policy.json
 }

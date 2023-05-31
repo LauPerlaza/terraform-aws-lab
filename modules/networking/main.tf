@@ -67,7 +67,7 @@ resource "aws_internet_gateway" "igw_test" {
   }
 }
 #   #   # AWS ROUTE TABLE #  #   #
-resource "aws_route_table" "route_table_test" { 
+resource "aws_route_table" "route_table_test" {
   vpc_id = aws_vpc.vpc_test.id
   route {
     cidr_block = "0.0.0.0/0"
