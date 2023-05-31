@@ -49,4 +49,30 @@ data "aws_iam_policy_document" "s3_policy" {
     ]
   }
 }
+resource "aws_kms_key" "key_test" {
+  description             = "encrypt_bucket_objects"
+  deletion_window_in_days = 10
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
+  count  = var.encrypt_with_kms == true ? 2 : 0   
+  bucket = module.s3_test.bucket_id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.key_test.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
+  count  = var.encrypt_with_kms == false ? 0 : 2
+  bucket = module.s3_test.bucket_id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.key_test.arn
+      sse_algorithm     = "AES256"
+    }
+  }
+}
 
