@@ -55,12 +55,11 @@ module "rds_test" {
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
 resource "aws_kms_key" "key_test" {
-  # count c
   description             = "encrypt_bucket_objects"
   deletion_window_in_days = 10
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
-  count = var.encrypt_with_kms == true ? 1 : 0
+  count  = var.encrypt_with_kms == true ? 1 : 0
   bucket = module.s3_test.bucket_id
 
   rule {
@@ -71,7 +70,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
   }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
-  count = var.encrypt_with_kms == true ? 0 : 1 
+  count  = var.encrypt_with_kms == true ? 0 : 1
   bucket = module.s3_test.bucket_id
 
   rule {
@@ -81,15 +80,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
     }
   }
 }
-resource "random_string" "bucket_name" {
-  length  = 4
-  special = false
-}
 module "s3_test" {
   source               = "./modules/s3_bucket"
-  bucket_name          = "bucket_s3_test_${random_string.bucket_name.result}"
+  bucket_name          = "bucket_s3_test"
   environment          = var.environment
   region               = "us-east-1"
-  enable_bucket_policy = false 
-  versioning_status    = false 
+  enable_bucket_policy = false
+  versioning_status    = false
 }
