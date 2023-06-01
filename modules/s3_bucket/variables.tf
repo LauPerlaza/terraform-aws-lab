@@ -3,7 +3,7 @@ variable "environment" {
   type        = string
   description = "Entorno del bucket de S3"
 }
-# Esta variable se utiliza para especificar la región en la que se creará el bucket de S3
+#Esta variable se utiliza para especificar la región en la que se creará el bucket de S3
 variable "region" {
   type = string
 }
@@ -28,7 +28,7 @@ variable "versioning_status" {
   description = "Indica si se habilita el versionado del bucket de S3"
 }
 #Esta variable se utiliza para indicar si se encripta el bucket de S3 con KMS.
-# El tipo de variable se establece en bool, lo que significa que espera un valor booleano (true o false)
+#El tipo de variable se establece en bool, lo que significa que espera un valor booleano (true o false)
 variable "encrypt_with_kms" {
   type        = bool
   description = "Indica si se encrypta con kms"

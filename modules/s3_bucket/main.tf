@@ -1,11 +1,11 @@
-# AWS bucket s3
-#random_string - Este recurso genera una cadena aleatoria utilizada como parte del nombre del bucket. 
+# AWS bucket s3 #
+#Este recurso genera una cadena aleatoria utilizada como parte del nombre del bucket. 
 #La longitud de la cadena se establece en 4 caracteres y no contiene caracteres especiales.
 resource "random_string" "bucket_name" {
   length  = 4
   special = false
 }
-#Este recurso crea un bucket de S3 en AWS. El nombre del bucket se compone 
+#Este recurso crea un bucket de S3. El nombre del bucket se compone 
 #concatenando el nombre del bucket generado aleatoriamente 
 resource "aws_s3_bucket" "s3_test" {
   bucket        = "${var.bucket_name}_${random_string.bucket_name.result}"
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_ownership_controls" "acl_test" {
 }
 #Este recurso establece la configuración de control de acceso (ACL) para el bucket de S3. 
 #Aquí se configura la ACL en "private", lo que significa que solo el propietario del bucket 
-#y las cuentas autorizadas tienen acceso al bucket y sus objetos.
+#tienen acceso al bucket y sus objetos.
 resource "aws_s3_bucket_acl" "acl_test" {
   depends_on = [aws_s3_bucket_ownership_controls.acl_test]
   bucket     = aws_s3_bucket.s3_test.id
@@ -46,7 +46,7 @@ resource "aws_s3_bucket_policy" "s3_policy" {
   bucket = aws_s3_bucket.s3_test.id
   policy = var.bucket_policy
 }
-#Este recurso configura la encriptación del lado del servidor para el bucket de S3 con kms
+#Este recurso configura la encriptación del bucket de S3 con kms
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_kms" {
   count  = var.encrypt_with_kms == true ? 1 : 0
   bucket = aws_s3_bucket.s3_test.id
@@ -58,7 +58,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
     }
   }
 }
-#Este recurso configura la encriptación del lado del servidor para el bucket de S3 con aes
+#Este recurso configura la encriptación del bucket de S3 con aes
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_aes" {
   count  = var.encrypt_with_kms == false ? 1 : 0
   bucket = aws_s3_bucket.s3_test.id

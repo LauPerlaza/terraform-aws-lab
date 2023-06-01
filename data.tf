@@ -1,9 +1,9 @@
-# Este bloque se utiliza para definir un documento de política de IAM 
+#Este bloque se utiliza para definir un documento de política de IAM 
 #que no se va a crear ni modificar, sino que se utilizará como datos en otros recursos.
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     #se especifica el tipo de entidad principal a la que se aplicará la política. 
-    #En este caso, el tipo es "AWS" y se proporciona el ARN (Amazon Resource Name) del usuario "laura.perlaza"
+    #En este caso, el tipo es "AWS" y se proporciona el ARN del usuario "laura.perlaza"
     principals {
       type        = "AWS"
       identifiers = ["arn:aws:iam::017333715993:user/laura.perlaza"]

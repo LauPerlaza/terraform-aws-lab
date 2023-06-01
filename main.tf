@@ -11,7 +11,7 @@ module "networking_test" {
   region      = var.region
   environment = var.environment
 }
-#Este recurso crea un grupo de seguridad para una instancia de EC2. 
+#Este recurso crea un grupo de seguridad para la instancia de EC2. 
 #Dependiendo del módulo "networking_test", 
 resource "aws_security_group" "security_group_ec2_test" {
   depends_on  = [module.networking_test]
@@ -63,7 +63,7 @@ module "rds_test" {
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
-#este modulo crea una instancia de AWS Key Management Service (KMS).
+#este modulo crea una KMS.
 #Se configura el periodo de ventana de eliminación en 10 días.
 module "kms" {
   source                  = "./modules/kms"
