@@ -1,5 +1,9 @@
-output "vpc_id" {
-  value = aws_vpc.vpc.id
+output "vpc1_id" {
+  value = aws_vpc.vpc1.id
+}
+
+output "vpc2_id" {
+  value = aws_vpc.vpc2.id
 }
 
 output "cidr_block" {

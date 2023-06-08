@@ -1,19 +1,22 @@
 module "vpc1" {
   source         = "../modules/networking"
-  vpc_name       = "vpc1_test"
-  cidr_block = "10.1.0.0/16"
   region = var.region
   environment = var.environment
   ip          = "181.63.51.122/32"
+  cidr_block  = "10.20.0.0/16"
+  cidr_block_subnet_public = ["10.20.1.0/24", "10.20.2.0/24"]
+  cidr_block_subnet_public_db = ["10.20.4.0/24", "10.20.5.0/24"]
+  cidr_block_subnet_private = ["10.20.10.0/24", "10.20.20.0/24"]
 }
 
 module "vpc2" {
   source         = "../modules/networking"
-  vpc_name       = "vpc2_test"
-  cidr_block = "192.168.0.0/16"
   region = var.region
   environment = var.environment
   ip          = "181.63.51.122/32"
+  cidr_block = "192.168.0.0/16"
+  cidr_block_subnet_public = ["192.168.10.0/24", "192.168.20.0/24"]
+  cidr_block_subnet_private = ["192.168.30.0/24", "192.168.40.0/24"]
 }
 
 resource "aws_vpc_peering_connection" "peering_connection" {
