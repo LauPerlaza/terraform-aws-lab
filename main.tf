@@ -2,20 +2,21 @@
 module "policy_test" {
   source      = "./modules/iam_policy"
   region      = var.region
-  environment = var.environment  
+  environment = var.environment
 }
 
 #Este modulo crea el networking de la infraestructura 
 
 module "networking_test" {
-  source      = "./modules/networking"
-  ip          = "181.63.51.122/32"
-  region      = var.region
-  environment = var.environment
-  cidr_block  = "10.0.0.0/16"
-  cidr_block_subnet_public = ["10.0.1.0/24", "10.0.2.0/24"]
+  source                      = "./modules/networking"
+  ip                          = "181.63.51.122/32"
+  region                      = var.region
+  environment                 = var.environment
+  name_vpc                    = "vpc_test"
+  cidr_block_vpc              = "10.0.0.0/16"
+  cidr_block_subnet_public    = ["10.0.1.0/24", "10.0.2.0/24"]
   cidr_block_subnet_public_db = ["10.0.4.0/24", "10.0.5.0/24"]
-  cidr_block_subnet_private = ["10.0.2.0/24", "10.0.3.0/24"]
+  cidr_block_subnet_private   = ["10.0.2.0/24", "10.0.3.0/24"]
 }
 
 #Este recurso crea un grupo de seguridad para la instancia de EC2. 

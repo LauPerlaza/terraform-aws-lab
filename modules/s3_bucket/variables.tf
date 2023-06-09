@@ -43,6 +43,6 @@ variable "kms_master_key_id" {
 }
 #Esta variable se utiliza para especificar la política del bucket de S3
 variable "bucket_policy" {
-  type = string
+  type        = string
   description = "especifica la política del bucket de S3"
 }

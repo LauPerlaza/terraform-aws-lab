@@ -17,13 +17,17 @@ variable "cidr_block_vpc" {
   type        = string
 }
 variable "cidr_block_subnet_public" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "cidr_block_subnet_public_db" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "cidr_block_subnet_private" {
-  type    = list(string)
+  type = list(string)
+}
+
+variable "name_vpc" {
+  type = string
 }
