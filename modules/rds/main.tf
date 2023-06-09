@@ -17,7 +17,7 @@ resource "aws_db_instance" "rds_test" {
   availability_zone      = var.availability_zone
   multi_az               = var.multi_az
   skip_final_snapshot    = true
-  max_allocated_storage = 100
+  max_allocated_storage  = 100
 }
 
 #   #   # AWS SECURITY GROUP #  #   #

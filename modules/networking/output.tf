@@ -1,13 +1,13 @@
 output "vpc_id" {
   value = aws_vpc.vpc_test.id
 }
-output "subnet_id_sub_public1" { 
+output "subnet_id_sub_public1" {
   value = aws_subnet.sub_public1.id
 }
-output "subnet_id_sub_public2" { 
+output "subnet_id_sub_public2" {
   value = aws_subnet.sub_public2.id
 }
-output "subnet_id_sub_public3_db" { 
+output "subnet_id_sub_public3_db" {
   value = aws_subnet.sub_public3_db.id
 }
 output "subnet_id_sub_public4_db" {
