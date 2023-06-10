@@ -7,3 +7,4 @@ variable "region" {
 variable "environment" {
   type        = string
   description = "Entorno de la infraestructura"
+}
