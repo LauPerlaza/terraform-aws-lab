@@ -4,15 +4,24 @@ module "policy_test" {
   region      = var.region
   environment = var.environment
 }
+
 #Este modulo crea el networking de la infraestructura 
+
 module "networking_test" {
-  source      = "./modules/networking"
-  ip          = "181.63.51.122/32"
-  region      = var.region
-  environment = var.environment
+  source                      = "./modules/networking"
+  ip                          = "181.63.51.122/32"
+  region                      = var.region
+  environment                 = var.environment
+  name_vpc                    = "vpc_test"
+  cidr_block_vpc              = "10.0.0.0/16"
+  cidr_block_subnet_public    = ["10.0.1.0/24", "10.0.2.0/24"]
+  cidr_block_subnet_public_db = ["10.0.4.0/24", "10.0.5.0/24"]
+  cidr_block_subnet_private   = ["10.0.2.0/24", "10.0.3.0/24"]
 }
+
 #Este recurso crea un grupo de seguridad para la instancia de EC2. 
 #Dependiendo del módulo "networking_test", 
+
 resource "aws_security_group" "security_group_ec2_test" {
   depends_on  = [module.networking_test]
   name        = "security_group_ec2_test"
@@ -32,8 +41,10 @@ resource "aws_security_group" "security_group_ec2_test" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 #Este modulo crea una instancia de EC2. 
 #Dependiendo de los módulos "aws_security_group.security_group_ec2_test" y "networking_test"
+
 module "ec2_test" {
   depends_on    = [aws_security_group.security_group_ec2_test, module.networking_test]
   source        = "./modules/ec2"
@@ -43,12 +54,16 @@ module "ec2_test" {
   name          = "ec2_test"
   environment   = var.environment
 }
+
 #Este bloque de datos recopila 
+
 #información sobre la VPC creada por el módulo "networking_test"
 data "aws_vpc" "vpc_cidr" {
   id = module.networking_test.vpc_id
 }
+
 #Este modulo crea una instancia de RDS
+
 module "rds_test" {
   source            = "./modules/rds"
   environment       = var.environment
@@ -63,13 +78,17 @@ module "rds_test" {
   instance_class    = var.environment == "develop" ? "db.t2.micro" : "db.t2.medium"
   cidr_to_allow     = data.aws_vpc.vpc_cidr.cidr_block
 }
+
 #este modulo crea una KMS.
 #Se configura el periodo de ventana de eliminación en 10 días.
+
 module "kms" {
   source                  = "./modules/kms"
   deletion_window_in_days = 10
 }
+
 #Este modulo crea un bucket de S3
+
 module "s3_test" {
   source               = "./modules/s3_bucket"
   bucket_name          = "bucket_s3_test"
