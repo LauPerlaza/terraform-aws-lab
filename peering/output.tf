@@ -26,3 +26,11 @@ output "route_table_id_2" {
 output "sgroup_ec2" {
   value = aws_security_group.sgroup_ec2.id
 }
+
+output "ec2_1" {
+  value = aws_instance.ec2_1.id
+}
+
+output "ec2_2" {
+  value = aws_instance.ec2_2.id
+}

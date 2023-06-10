@@ -38,21 +38,21 @@ resource "aws_route_table" "route_table_vpc2" {
 
 resource "aws_route" "route_vpc2" {
   route_table_id            = aws_route_table.route_table_vpc1.id
-  destination_cidr_block    = module.vpc2.cidr_block
+  destination_cidr_block    = module.vpc2.cidr_block_vpc
   vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
 }
 
 resource "aws_route" "route_vpc1" {
   route_table_id            = aws_route_table.route_table_vpc2.id
-  destination_cidr_block    = module.vpc1.cidr_block
+  destination_cidr_block    = module.vpc1.cidr_block_vpc
   vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
 }
 
 module "ec2_1" {
   source        = "../modules/ec2"
   instance_type = "t2.micro"
-  subnet_id     = module.networking_test.subnet_id_sub_public1
-  sg_ids        = [aws_security_group.security_group_ec2_test.id]
+  subnet_id     = module.vpc1.subnet_id_subnet_public1
+  sg_ids        = [aws_security_group.sgroup_ec2.id]
   name          = "ec2_1"
   environment   = var.environment
 }
@@ -60,8 +60,39 @@ module "ec2_1" {
 module "ec2_2" {
   source        = "../modules/ec2"
   instance_type = "t2.micro"
-  subnet_id     = module.networking_test.subnet_id_sub_public2
-  sg_ids        = [aws_security_group.security_group_ec2_test.id]
-  name          = "ec2_1"
+  subnet_id     = module.vpc2.subnet_id_subnet_public1
+  sg_ids        = [aws_security_group.sgroup_ec2.id]
+  name          = "ec2_2"
   environment   = var.environment
 }
+
+resource "aws_security_group" "sgroup_ec2" {
+  name        = "sgroup_ec2"
+  description = "Security group for EC2 instances"
+  vpc_id      = module.vpc1.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "null_resource" "ping_ec2" {
+  depends_on = [module.ec2_1, module.ec2_2]
+
+  provisioner "local-exec" {
+    command = "ping -c 4 ${module.ec2_2.private_ip}"
+  }
+}
+
+
+
