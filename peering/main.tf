@@ -2,6 +2,7 @@ module "vpc1" {
   source                      = "../modules/networking"
   region                      = var.region
   environment                 = var.environment
+  name                        = "vpc1"
   ip                          = "181.63.51.122/32"
   cidr_block_vpc              = "10.20.0.0/16"
   cidr_block_subnet_public    = ["10.20.1.0/24", "10.20.2.0/24"]
@@ -13,6 +14,7 @@ module "vpc2" {
   source                      = "../modules/networking"
   region                      = var.region
   environment                 = var.environment
+  name                        = "vpc1"
   ip                          = "181.63.51.122/32"
   cidr_block_vpc              = "192.168.0.0/16"
   cidr_block_subnet_public    = ["192.168.10.0/24", "192.168.20.0/24"]
