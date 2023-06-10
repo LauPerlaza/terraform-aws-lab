@@ -47,3 +47,21 @@ resource "aws_route" "route_vpc1" {
   destination_cidr_block    = module.vpc1.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.peering_connection.id
 }
+
+module "ec2_1" {
+  source        = "../modules/ec2"
+  instance_type = "t2.micro"
+  subnet_id     = module.networking_test.subnet_id_sub_public1
+  sg_ids        = [aws_security_group.security_group_ec2_test.id]
+  name          = "ec2_1"
+  environment   = var.environment
+}
+
+module "ec2_2" {
+  source        = "../modules/ec2"
+  instance_type = "t2.micro"
+  subnet_id     = module.networking_test.subnet_id_sub_public2
+  sg_ids        = [aws_security_group.security_group_ec2_test.id]
+  name          = "ec2_1"
+  environment   = var.environment
+}
