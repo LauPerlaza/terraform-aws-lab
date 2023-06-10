@@ -8,7 +8,7 @@ resource "aws_instance" "instance_test" {
   vpc_security_group_ids = var.sg_ids
 
   tags = {
-    Name        = "instance_test${var.name}_${var.environment}"
+    Name        = "${var.name}_${var.environment}"
     Environment = var.environment
     CreatedBy   = "terraform"
   }
