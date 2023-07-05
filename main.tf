@@ -100,3 +100,11 @@ module "s3_test" {
   kms_master_key_id    = module.kms.kms_arn
   bucket_policy        = data.aws_iam_policy_document.s3_policy.json
 }
+
+module "dynamondb_test" {
+  source = "./modules/dynamodb_table"
+  table_name    = "state-lock-tfstate-test"
+  read_capacity = 20
+  write_capacity = 20
+  environment   = "dev"
+}
