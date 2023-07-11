@@ -14,13 +14,14 @@ jobs:
             - name: Echo del mensaje
               id: echo-mensaje
               run: |
-               echo ¡Hello World!
+               echo "¡Hello World!"
             - name: Dime la fecha
               run: date
             - name: correr script
               id: script-hello
-              run: chmod +x ./hello.sh
-                   ./hello.sh
+              run: |
+                chmod +x ./hello.sh
+                ./hello.sh
               shell: bash
               working-directory: .github/jobs
             - name: Configure AWS Credentials
@@ -32,5 +33,19 @@ jobs:
                 aws-region: us-east-2
             - name: Listar buckets de S3
               id: listar-buckets
-              run: aws s3 ls
+              run: |
+                aws s3 ls
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: 1.1.7
+            - name: terraform_init 
+              id: init
+              run: |
+               terraform init
+            
+
+
+
+
 
