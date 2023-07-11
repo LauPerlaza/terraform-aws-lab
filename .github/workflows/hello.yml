@@ -19,7 +19,7 @@ jobs:
               run: date
             - name: correr script
               id: script-hello
-              run: ./.github/jobs/hello.sh
+              run: ./hello.sh
               shell: bash
               working-directory: .github/jobs
             - name: Configure AWS Credentials
