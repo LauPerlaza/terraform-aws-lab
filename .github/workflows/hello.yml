@@ -20,6 +20,7 @@ jobs:
             - name: correr script
               id: script-hello
               run: ls -l .github/jobs/hello.sh
+                chmod +x ./hello.sh
                 ./hello.sh
               shell: bash
               working-directory: .github/jobs
