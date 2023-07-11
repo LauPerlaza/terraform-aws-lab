@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - feature/*
-              workflow_dispatch
 
 jobs:
     Hello_World:
