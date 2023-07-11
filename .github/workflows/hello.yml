@@ -13,8 +13,10 @@ jobs:
             - uses: actions/checkout@v3
             - name: Echo del mensaje
               id: echo-mensaje
+              env: 
+                MSJ: 'Este es mi primer Pipeline'
               run: |
-               echo "¡Hello World!"
+               echo "¡Hello World $MSJ!"
             - name: Dime la fecha
               run: date
             - name: correr script
