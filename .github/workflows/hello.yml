@@ -4,14 +4,15 @@ on:
     push:
         branches:
             - feature/*
+              workflow_dispatch
 
 jobs:
     Hello_World:
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v3
             - name: Echo del mensaje
               run: |
                echo "Hello World!"
             - name: Dime la fecha
               run: date
-            - run: ls -l 
