@@ -14,7 +14,7 @@ jobs:
             - name: Echo del mensaje
               id: echo-mensaje
               run: |
-               echo Hello World!
+               echo ¡Hello World!
             - name: Dime la fecha
               run: date
             - name: correr script
