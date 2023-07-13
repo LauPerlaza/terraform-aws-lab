@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "tfstate-test"
-    dynamodb_table = "state-lock-tfstate-test"
-    key            = "testing/aws-s3-bucket.tfstate"
-    region         = "us-west-2"
+    bucket         = "state-tf-tes-lab"
+    dynamodb_table = "tfstate-table"
+    key            = "terraform-tfstate"
+    region         = "us-east-1"
   }
 }
