@@ -1,4 +1,4 @@
-name: create resources
+name: create-resources
 
 on:
     push:
