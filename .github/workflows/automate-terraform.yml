@@ -31,7 +31,6 @@ jobs:
             - name: terraform backend
               id: backend
               run: |
-                cd terraform-aws-lab
                 backend.tf
               shell: bash
             
