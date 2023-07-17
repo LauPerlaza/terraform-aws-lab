@@ -19,6 +19,7 @@ jobs:
                 aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
                 aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
                 aws-region: us-east-1
+            
             - name: create resources
               id: resources
               run: |
@@ -26,16 +27,20 @@ jobs:
                 ./create_resources.sh
               shell: bash
               working-directory: .github/jobs 
+            
             - name: terraform backend
               id: backend
               run: |
-                  ./backend.tf
+                cd ./terraform-aws-lab
+                backend.tf
               shell: bash
               working-directory: terraform-aws-lab
+            
             - name: terraform_init 
               id: init
               run: |
                 terraform init
+            
             - name: Plan y Apply
               run: |
                 terraform plan 
