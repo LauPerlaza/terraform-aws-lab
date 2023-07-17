@@ -32,8 +32,7 @@ jobs:
               id: backend
               run: |
                 backend.tf
-              shell: bash
-            
+                          
             - name: terraform_init 
               id: init
               run: |
