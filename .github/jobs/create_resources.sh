@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Configurar variables
+
 bucket_name="test-tf-state"
 table_name="table-terraform-tf"
 region="us-east-1"
