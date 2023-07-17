@@ -34,7 +34,6 @@ jobs:
                 cd terraform-aws-lab
                 backend.tf
               shell: bash
-              working-directory: .terraform-aws-lab
             
             - name: terraform_init 
               id: init
