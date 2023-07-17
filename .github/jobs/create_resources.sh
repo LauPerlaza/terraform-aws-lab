@@ -19,7 +19,8 @@ fi
 # Verificar si la tabla ya existe
 table_exists=$(aws dynamodb describe-table --table-name "$table_name" --region "$region" 2>&1)
 if [[ $table_exists == *"TableNotFoundException"* ]]; then
-  # La tabla no existe, crearla
+
+# La tabla no existe, crearla
   aws dynamodb create-table --table-name "$table_name" --region "$region" --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --billing-mode PAY_PER_REQUEST
   echo "Tabla creada: $table_name"
 else
