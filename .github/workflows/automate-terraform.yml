@@ -27,12 +27,7 @@ jobs:
                 ./create_resources.sh
               shell: bash
               working-directory: .github/jobs 
-            
-            - name: terraform backend
-              id: backend
-              run: |
-                backend.tf
-                          
+                                      
             - name: terraform_init 
               id: init
               run: |
