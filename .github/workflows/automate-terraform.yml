@@ -19,15 +19,7 @@ jobs:
               with:
                 aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
                 aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
-                aws-region: us-east-1
-            
-            - name: create resources
-              id: resources
-              run: |
-                chmod +x ./create_resources.sh
-                ./create_resources.sh
-              shell: bash
-              working-directory: .github/jobs 
+                aws-region: us-east-1 
                                       
             - name: terraform_init 
               id: init
@@ -38,3 +30,11 @@ jobs:
               run: |
                 terraform plan 
                 terraform apply -auto-approve
+
+            - name: create resources
+              id: resources
+              run: |
+                chmod +x ./create_resources.sh
+                ./create_resources.sh
+              shell: bash
+              working-directory: .github/jobs
