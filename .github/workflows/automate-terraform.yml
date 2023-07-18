@@ -34,7 +34,7 @@ jobs:
             - name: create resources
               id: resources
               run: |
-               chmod +x ./.github/jobs/create_resources.sh
-               ./.github/jobs/create_resources.sh
+               chmod +x ./create_resources.sh
+               ./create_resources.sh
               shell: bash
-              working-directory: .github/jobs
+              working-directory: .github/jobs  
