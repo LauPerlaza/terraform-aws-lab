@@ -10,6 +10,7 @@ variable "region" {
 #que se están desplegando los recursos de infraestructura.
 variable "environment" {
   type = string
+  default   = "test"
 }
 #Esta variable se utiliza para especificar si se debe utilizar el servicio de KMS
 #para el cifrado del bucket de S3. El tipo de variable se establece en bool, 
