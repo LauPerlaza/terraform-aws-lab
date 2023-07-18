@@ -28,7 +28,7 @@ jobs:
             
             - name: Plan y Apply
               run: |
-                terraform plan 
+                terraform plan -lock=false
                 terraform apply -auto-approve
 
             - name: create resources
