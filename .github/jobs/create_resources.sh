@@ -2,14 +2,15 @@
 
 # Configurar variables.
 
-bucket_name="test-terraf-state"
+bucket_name="test-terraf-state-lab"
 table_name="table-terraform-tf"
 region="us-east-1"
 
 # Verificar si el bucket ya existe
 bucket_exists=$(aws s3api head-bucket --bucket "$bucket_name" --region "$region" 2>&1)
 if [[ $bucket_exists == *"Not Found"* ]]; then
-  # El bucket no existe, crearlo
+
+# El bucket no existe, crearlo
   aws s3api create-bucket --bucket "$bucket_name" --region "$region"
   aws s3api put-bucket-versioning --bucket "$bucket_name" --region "$region" --versioning-configuration Status=Enabled
   echo "Bucket creado: $bucket_name"
