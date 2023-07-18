@@ -2,7 +2,7 @@
 
 # Configurar variables.
 
-bucket_name="test-tf-state"
+bucket_name="test-terraf-state"
 table_name="table-terraform-tf"
 region="us-east-1"
 
