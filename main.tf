@@ -21,7 +21,7 @@ module "networking_test" {
 
 #Este recurso crea un grupo de seguridad para la instancia de EC2. 
 #Dependiendo del módulo "networking_test", 
-
+/*
 resource "aws_security_group" "security_group_ec2_test" {
   depends_on  = [module.networking_test]
   name        = "security_group_ec2_test"
@@ -63,7 +63,7 @@ data "aws_vpc" "vpc_cidr" {
 }
 
 #Este modulo crea una instancia de RDS
-/*
+
 module "rds_test" {
   source            = "./modules/rds"
   environment       = var.environment
