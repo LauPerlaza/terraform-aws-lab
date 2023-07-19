@@ -9,14 +9,17 @@ variable "region" {
 #Esta variable se utiliza para especificar el entorno en el 
 #que se están desplegando los recursos de infraestructura.
 variable "environment" {
-  type = string
+  type    = string
+  default = "test"
 }
 #Esta variable se utiliza para especificar si se debe utilizar el servicio de KMS
 #para el cifrado del bucket de S3. El tipo de variable se establece en bool, 
 #lo que significa que espera un valor booleano (verdadero o falso)
+/*
 variable "encrypt_with_kms" {
   type        = bool
   default     = false
   description = "ARN de la clave KMS para el cifrado del bucket de S3"
 
 }
+*/

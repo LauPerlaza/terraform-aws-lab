@@ -16,12 +16,12 @@ module "networking_test" {
   cidr_block_vpc              = "10.0.0.0/16"
   cidr_block_subnet_public    = ["10.0.1.0/24", "10.0.2.0/24"]
   cidr_block_subnet_public_db = ["10.0.4.0/24", "10.0.5.0/24"]
-  cidr_block_subnet_private   = ["10.0.2.0/24", "10.0.3.0/24"]
+  cidr_block_subnet_private   = ["10.0.6.0/24", "10.0.7.0/24"]
 }
 
 #Este recurso crea un grupo de seguridad para la instancia de EC2. 
 #Dependiendo del módulo "networking_test", 
-
+/*
 resource "aws_security_group" "security_group_ec2_test" {
   depends_on  = [module.networking_test]
   name        = "security_group_ec2_test"
@@ -100,3 +100,4 @@ module "s3_test" {
   kms_master_key_id    = module.kms.kms_arn
   bucket_policy        = data.aws_iam_policy_document.s3_policy.json
 }
+*/
