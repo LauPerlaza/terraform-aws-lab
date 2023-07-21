@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         
         env:
-          BUCKET_NAME: "ter-bucket-$ENVIRONMENT-test"
+          BUCKET_NAME: "terra-bucket-$ENVIRONMENT-test"
           DYNAMODB_TABLE: "dynamodb-table-$ENVIRONMENT-test"
           AWS_REGION: "us-east-1"
           ENVIRONMENT: "Develop"
