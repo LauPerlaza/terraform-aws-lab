@@ -8,7 +8,13 @@ on:
 jobs:
     ejecutar-script:
         runs-on: ubuntu-latest
-
+        
+        env:
+          BUCKET_NAME: "Test-terraf-state-lab"
+          DYNAMODB_TABLE: "Table-terraform-tf"
+          AWS_REGION: "us-east-1"
+          ENVIRONMENT: "Develop"
+    
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -32,7 +38,11 @@ jobs:
             - name: terraform_init 
               id: init
               run: |
-                terraform init
+               terraform init \
+                -backend-config="bucket=${BUCKET_NAME}-${ENVIRONMENT}" \
+                -backend-config="region=${AWS_REGION}" \
+                -backend-config="key=Terraform-tfstate" \
+                -backend-config="dynamodb_table=${DYNAMODB_TABLE}-${ENVIRONMENT}"
             
             - name: Terraform Plan
               run: |
