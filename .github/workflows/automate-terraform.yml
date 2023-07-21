@@ -10,8 +10,8 @@ jobs:
         runs-on: ubuntu-latest
         
         env:
-          BUCKET_NAME: "Test-terraf-state-lab"
-          DYNAMODB_TABLE: "Table-terraform-tf"
+          BUCKET_NAME: "ter-bucket-$ENVIRONMENT-test"
+          DYNAMODB_TABLE: "dynamodb-table-$ENVIRONMENT-test"
           AWS_REGION: "us-east-1"
           ENVIRONMENT: "Develop"
     
@@ -39,10 +39,10 @@ jobs:
               id: init
               run: |
                terraform init \
-                -backend-config="bucket=${BUCKET_NAME}-${ENVIRONMENT}" \
+                -backend-config="bucket=${BUCKET_NAME}" \
                 -backend-config="region=${AWS_REGION}" \
                 -backend-config="key=Terraform-tfstate" \
-                -backend-config="dynamodb_table=${DYNAMODB_TABLE}-${ENVIRONMENT}"
+                -backend-config="dynamodb_table=${DYNAMODB_TABLE}"
             
             - name: Terraform Plan
               run: |
