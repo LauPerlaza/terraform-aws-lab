@@ -1,4 +1,4 @@
-name: automate terraform
+name: automate-terraform
 
 on:
   push:
