@@ -9,7 +9,6 @@ DYNAMODB_TABLE="dynamodb-table-$ENVIRONMENT-test"
 AWS_REGION="us-east-1"
 
 # Verificar si el bucket ya existe
-
 bucket_exists="$(aws s3api head-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" 2>&1)" 
 echo $bucket_exists 
 if [[ $bucket_exists == *"Not Found"* ]]; then
@@ -24,6 +23,7 @@ fi
 
 # Verificar si la tabla ya existe
 table_exists="$(aws dynamodb describe-table --table-name "$DYNAMODB_TABLE" --region "$AWS_REGION" 2>&1)"
+
 echo $table_exists
 if [[ $table_exists == *"Requested resource not found"* ]]; then
 
