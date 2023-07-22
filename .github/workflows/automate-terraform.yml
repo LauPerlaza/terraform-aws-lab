@@ -7,7 +7,7 @@ on:
 
 env:
   ENVIRONMENT: "develop"
-  STATE_KEY: "Terraform-tfstate"
+  STATE_KEY: "Terraform-tfstate-test"
 
 jobs:
   ejecutar-script:

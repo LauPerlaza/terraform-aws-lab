@@ -5,10 +5,11 @@
 ENVIRONMENT=${ENVIRONMENT:-"develop"}
 
 BUCKET_NAME="terralab-$ENVIRONMENT-test-01"
-DYNAMODB_TABLE="Dynamodb-table-$ENVIRONMENT-test"
+DYNAMODB_TABLE="dynamodb-table-$ENVIRONMENT-test"
 AWS_REGION="us-east-1"
 
 # Verificar si el bucket ya existe
+
 bucket_exists="$(aws s3api head-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" 2>&1)" 
 echo $bucket_exists 
 if [[ $bucket_exists == *"Not Found"* ]]; then
