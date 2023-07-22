@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#si no se define la variable de entorno ENVIRONMENT, se usará automáticamente 
+#si no se define la variable de entorno ENVIRONMENT, se usará automáticamente -
 #el valor predeterminado "Develop" para construir los nombres del bucket y la tabla DynamoDB.
 ENVIRONMENT=${ENVIRONMENT:-"develop"}
 
