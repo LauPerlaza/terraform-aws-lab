@@ -10,8 +10,8 @@ jobs:
         runs-on: ubuntu-latest
         
         env:
-          BUCKET_NAME: "test-terra-$ENVIRONMENT"
-          DYNAMODB_TABLE: "dynamodb-table-$ENVIRONMENT-test"
+          BUCKET_NAME: "terralab-${{ env.ENVIRONMENT }}-test"
+          DYNAMODB_TABLE: "dynamodb-table-${{ env.ENVIRONMENT }}-test"
           AWS_REGION: "us-east-1"
           ENVIRONMENT: "Develop"
     
