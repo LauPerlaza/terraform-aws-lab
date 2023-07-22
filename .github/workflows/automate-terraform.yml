@@ -10,10 +10,10 @@ jobs:
         runs-on: ubuntu-latest
         
         env:
-          BUCKET_NAME: "terralab-$ENVIRONMENT-test"
-          DYNAMODB_TABLE: "dynamodb-table-$ENVIRONMENT-test"
+          ENVIRONMENT: ${ENVIRONMENT:-"develop"}
+          BUCKET_NAME: "terralab-$ENVIRONMENT-test-01"
+          DYNAMODB_TABLE: "Dynamodb-table-$ENVIRONMENT-test"
           AWS_REGION: "us-east-1"
-          ENVIRONMENT: "Develop"
     
         steps:
             - name: Checkout
