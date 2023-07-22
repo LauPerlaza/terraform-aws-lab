@@ -7,6 +7,7 @@ on:
 
 env:
   ENVIRONMENT: "develop"
+  STATE_KEY: "Terraform-tfstate"
 
 jobs:
   ejecutar-script:
@@ -41,7 +42,7 @@ jobs:
           terraform init \
           -backend-config="bucket=${BUCKET_NAME}" \
           -backend-config="region=${AWS_REGION}" \
-          -backend-config="key=Terraform-tfstate" \
+          -backend-config="key=${STATE_KEY}" \
           -backend-config="dynamodb_table=${DYNAMODB_TABLE}"
             
       - name: Terraform Plan
