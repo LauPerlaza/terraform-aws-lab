@@ -46,9 +46,15 @@ jobs:
           -backend-config="dynamodb_table=${DYNAMODB_TABLE}"
             
       - name: Terraform Plan
+        if: github.ref == 'develop'
         run: |
-          terraform plan -out=tfplan -lock=false
-
+            terraform plan \
+            -input=false \
+            -var "region=${AWS_REGION}" \
+            -var "environment=${ENVIRONMENT}" \
+            -out tfplan
+            
       - name: Apply 
+        if: github.ref == 'develop'
         run: |
-          terraform apply -auto-approve tfplan
+            terraform apply -auto-approve tfplan
