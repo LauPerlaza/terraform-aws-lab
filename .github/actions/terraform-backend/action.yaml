@@ -5,6 +5,8 @@ runs:
   steps:
     - name: Config tf backend
       id: tf-backend
-      run: ./create_resources.sh
+      run: |
+       chmod +x ./terraform-backend.sh
+       ./terraform-backend.sh
       shell: bash
       working-directory: .github/workflows
