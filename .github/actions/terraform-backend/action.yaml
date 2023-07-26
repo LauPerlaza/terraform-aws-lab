@@ -1,0 +1,10 @@
+name: 'Terraform backend set-up'
+description: 'set-up terraform'
+runs:
+  using: "composite"
+  steps:
+    - name: Config tf backend
+      id: tf-backend
+      run: ./create_resources.sh
+      shell: bash
+      working-directory: .github/workflows
