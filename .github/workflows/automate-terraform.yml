@@ -53,6 +53,6 @@ jobs:
             
       - name: Terraform-Apply 
         id: tf-apply
-        if: github.ref == 'develop'
+        if: github.ref == 'develop' || startsWith(github.ref, 'feature/*')
         run: |
             terraform apply -auto-approve tfplan
