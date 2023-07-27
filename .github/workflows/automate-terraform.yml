@@ -29,7 +29,7 @@ jobs:
       - name: terraform-backend-set-up
         uses: ./.github/actions/terraform-backend    
 
-      - name: terraform-init 
+      - name: Terraform-Init 
         id: init
         run: |
           export BUCKET_NAME="terralab-${ENVIRONMENT}-test-01"
@@ -42,7 +42,8 @@ jobs:
           -backend-config="dynamodb_table=${DYNAMODB_TABLE}"
             
       - name: Terraform-Plan
-        if: github.ref == 'develop'
+        id: tf-plan
+        if: github.ref == 'develop'  || startsWith(github.ref, 'feature/*')
         run: |
             terraform plan \
             -input=false \
@@ -51,6 +52,7 @@ jobs:
             -out tfplan
             
       - name: Terraform-Apply 
+        id: tf-apply
         if: github.ref == 'develop'
         run: |
             terraform apply -auto-approve tfplan
