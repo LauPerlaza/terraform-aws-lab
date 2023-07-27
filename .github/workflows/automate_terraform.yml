@@ -1,16 +1,17 @@
-name: automate-terraform
+name: Terraform-infra-workflow
 
 on:
   push:
     branches:
       - feature/*
+      - develop
 
 env:
   ENVIRONMENT: "develop"
   STATE_KEY: "Terraform-tfstate-test"
 
 jobs:
-  ejecutar-script:
+  set-up-terraform-backend:
     runs-on: ubuntu-latest
         
     steps:
@@ -24,17 +25,12 @@ jobs:
           aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           aws-region: us-east-1 
+      
+      - name: terraform-backend-set-up
+        uses: ./.github/actions/terraform-backend    
 
-      - name: create resources
-        id: resources
-        run: |
-          chmod +x ./create_resources.sh
-          ./create_resources.sh
-        shell: bash
-        working-directory: .github/jobs      
-
-      - name: terraform_init 
-        id: init
+      - name: Terraform-Init 
+        id: tf-init
         run: |
           export BUCKET_NAME="terralab-${ENVIRONMENT}-test-01"
           export DYNAMODB_TABLE="dynamodb-table-${ENVIRONMENT}-test"
@@ -45,8 +41,8 @@ jobs:
           -backend-config="key=${STATE_KEY}" \
           -backend-config="dynamodb_table=${DYNAMODB_TABLE}"
             
-      - name: Terraform Plan
-        if: github.ref == 'develop'
+      - name: Terraform-Plan
+        id: tf-plan
         run: |
             terraform plan \
             -input=false \
@@ -54,7 +50,8 @@ jobs:
             -var "environment=${ENVIRONMENT}" \
             -out tfplan
             
-      - name: Apply 
-        if: github.ref == 'develop'
+      - name: Terraform-Apply 
+        id: tf-apply
+        if: ${{ github.ref == 'develop' || startsWith(github.ref, 'feature/*') }}
         run: |
             terraform apply -auto-approve tfplan
